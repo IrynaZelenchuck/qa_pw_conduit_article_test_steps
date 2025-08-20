@@ -26,7 +26,7 @@ test.beforeEach(async ({ page }) => {
   await homePage.assertYourFeedTabIsVisible();
 });
 
-test('Creat an article without required fields', async () => {
+test('Creat an article without title', async () => {
   const articleTitle = 'Article Title';
   const articleDescription = 'Article Description';
   const articleBody = 'Some text for article body';
@@ -42,4 +42,50 @@ test('Creat an article without required fields', async () => {
   await createArticlePage.assertErrorMessageContainsText(
     'Article title cannot be empty',
   );
+});
+
+test('Creat an article without description', async () => {
+  const articleTitle = 'Article Title';
+  const articleDescription = 'Article Description';
+  const articleBody = 'Some text for article body';
+  const tag = 'some-tag';
+  await homePage.clickNewArticleLink();
+  await createArticlePage.fillArticleTitle(articleTitle);
+  await createArticlePage.fillArticleBody(articleBody);
+  await createArticlePage.fillArticleTags(tag);
+  await createArticlePage.clickPublishArticleButton();
+  await createArticlePage.clickPublishArticleButton();
+  await createArticlePage.assertErrorMessageContainsText(
+    'Article description cannot be empty',
+  );
+});
+
+test('Creat an article without article text', async () => {
+  const articleTitle = 'Article Title';
+  const articleDescription = 'Article Description';
+  const articleBody = 'Some text for article body';
+  const tag = 'some-tag';
+  await homePage.clickNewArticleLink();
+  await createArticlePage.fillArticleTitle(articleTitle);
+  await createArticlePage.fillArticleDescription(articleDescription);
+  await createArticlePage.fillArticleTags(tag);
+  await createArticlePage.clickPublishArticleButton();
+  await createArticlePage.clickPublishArticleButton();
+  await createArticlePage.assertErrorMessageContainsText(
+    'Article body cannot be empty',
+  );
+});
+test('Creat an article without tag', async () => {
+  const articleTitle = 'Article Title';
+  const articleDescription = 'Article Description';
+  const articleBody = 'Some text for article body';
+  const tag = 'some-tag';
+  await homePage.clickNewArticleLink();
+  await createArticlePage.fillArticleTitle(articleTitle);
+  await createArticlePage.fillArticleDescription(articleDescription);
+  await createArticlePage.fillArticleBody(articleBody);
+
+  await createArticlePage.clickPublishArticleButton();
+  await createArticlePage.clickPublishArticleButton();
+  await createArticlePage.assertArticleCreation(articleTitle);
 });
